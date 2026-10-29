@@ -1,0 +1,165 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 11 Jun 2026, 02.02.54
+    Author     : Lenovo
+*/
+body{
+    background:#fff5f9;
+    font-family:'Segoe UI',sans-serif;
+    min-height:100vh;
+}
+
+/* HEADER */
+.top-header{
+    background:#ff5fa2;
+    color:white;
+    position:sticky;
+    top:0;
+    z-index:100;
+    box-shadow:0 4px 15px rgba(255,95,162,.15);
+}
+
+.btn-back{
+    background:white;
+    border:none;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#ff5fa2;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.btn-back:hover{
+    background:#ffe0ec;
+}
+
+/* CARD */
+.card-section{
+    background:white;
+    border-radius:25px;
+    box-shadow:0 8px 25px rgba(255,95,162,.15);
+    padding:25px;
+    margin-bottom:25px;
+}
+
+.card-section h3{
+    color:#ff5fa2;
+}
+
+/* EVENT INFO */
+.event-thumbnail{
+    width:100px;
+    height:100px;
+    border-radius:15px;
+    object-fit:cover;
+    flex-shrink:0;
+}
+
+/* TICKET */
+.ticket-row{
+    border:2px solid #ffe0ec;
+    border-radius:20px;
+    padding:16px;
+    margin-bottom:15px;
+    transition:.3s;
+}
+
+.ticket-row:hover{
+    border-color:#ff5fa2;
+}
+
+.ticket-name{
+    font-weight:bold;
+    color:#ff5fa2;
+    margin-bottom:3px;
+}
+
+.ticket-price{
+    color:#ff5fa2;
+    font-weight:bold;
+}
+
+/* COUNTER */
+.btn-counter{
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    border:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+}
+
+.btn-minus{
+    background:#ffe0ec;
+    color:#ff5fa2;
+}
+
+.btn-minus:hover:not(:disabled){
+    background:#ffd1e4;
+}
+
+.btn-minus:disabled{
+    opacity:.5;
+}
+
+.btn-plus{
+    background:#ff5fa2;
+    color:white;
+}
+
+.btn-plus:hover{
+    background:#ff3d8b;
+}
+
+.counter-value{
+    width:30px;
+    text-align:center;
+    font-weight:bold;
+    color:#ff5fa2;
+}
+
+/* TOTAL */
+.total-label{
+    color:#777;
+    font-size:14px;
+}
+
+.total-value{
+    color:#ff5fa2;
+    font-size:30px;
+    font-weight:bold;
+}
+
+/* BUTTON */
+.btn-proceed{
+    background:#ff5fa2;
+    color:white;
+    border:none;
+    padding:12px 25px;
+    border-radius:30px;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.btn-proceed:hover:not(:disabled){
+    background:#ff3d8b;
+}
+
+.btn-proceed:disabled{
+    background:#d9d9d9;
+    cursor:not-allowed;
+}
+
+/* TEXT */
+.text-muted{
+    color:#666 !important;
+}

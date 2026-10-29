@@ -1,0 +1,227 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 11 Jun 2026, 02.17.11
+    Author     : Lenovo
+*/
+body{
+    background:#fff5f9;
+    font-family:'Segoe UI', sans-serif;
+    margin:0;
+    padding:0;
+}
+
+/* HEADER */
+.top-header{
+    background:#ff5fa2;
+    color:white;
+    box-shadow:0 4px 15px rgba(255,95,162,.2);
+}
+
+.btn-back{
+    background:white;
+    border:none;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#ff5fa2;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.btn-back:hover{
+    background:#ffe0ec;
+}
+
+.top-header h1{
+    color:white !important;
+}
+
+/* TICKET CARD */
+.ticket-card{
+    background:white;
+    border-radius:25px;
+    overflow:hidden;
+    box-shadow:0 8px 25px rgba(255,95,162,.15);
+    margin-bottom:25px;
+    transition:.3s;
+}
+
+.ticket-card:hover{
+    transform:translateY(-5px);
+}
+
+.ticket-image{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+
+@media(min-width:768px){
+
+    .ticket-inner{
+        display:flex;
+    }
+
+    .ticket-image-wrap{
+        width:220px;
+        flex-shrink:0;
+    }
+
+    .ticket-image{
+        height:100%;
+    }
+}
+
+/* BADGES */
+.badge-type{
+    background:#ffe0ec;
+    color:#ff5fa2;
+    padding:6px 15px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.badge-status{
+    background:#e8fff0;
+    color:#16a34a;
+    padding:6px 15px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+/* DETAIL */
+.detail-icon{
+    color:#ff5fa2;
+}
+
+.ticket-card h3{
+    color:#ff5fa2;
+}
+
+/* BUTTON */
+.btn-outline-action{
+    border:2px solid #ff5fa2;
+    background:white;
+    color:#ff5fa2;
+    border-radius:30px;
+    padding:10px 20px;
+    transition:.3s;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.btn-outline-action:hover{
+    background:#ff5fa2;
+    color:white;
+}
+
+/* MODAL */
+.modal-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.5);
+    z-index:999;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+}
+
+.modal-overlay.show{
+    display:flex;
+}
+
+.modal-card{
+    background:white;
+    width:100%;
+    max-width:450px;
+    border-radius:25px;
+    padding:30px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(255,95,162,.2);
+}
+
+.modal-card h3{
+    color:#ff5fa2;
+}
+
+.qr-box{
+    background:#fff5f9;
+    padding:25px;
+    border-radius:20px;
+    margin-bottom:20px;
+}
+
+.qr-inner{
+    background:white;
+    width:220px;
+    height:220px;
+    margin:auto;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius:15px;
+}
+
+.btn-close-modal{
+    width:100%;
+    border:none;
+    background:#ff5fa2;
+    color:white;
+    padding:12px;
+    border-radius:30px;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.btn-close-modal:hover{
+    background:#ff3d8b;
+}
+
+/* EMPTY STATE */
+.empty-card{
+    background:white;
+    border-radius:25px;
+    padding:60px 30px;
+    text-align:center;
+    box-shadow:0 8px 25px rgba(255,95,162,.15);
+}
+
+.empty-icon{
+    width:90px;
+    height:90px;
+    margin:auto;
+    margin-bottom:20px;
+    border-radius:50%;
+    background:#ffe0ec;
+    color:#ff5fa2;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:40px;
+}
+
+.btn-browse{
+    display:inline-block;
+    margin-top:15px;
+    background:#ff5fa2;
+    color:white;
+    text-decoration:none;
+    padding:12px 25px;
+    border-radius:30px;
+    transition:.3s;
+}
+
+.btn-browse:hover{
+    background:#ff3d8b;
+    color:white;
+}

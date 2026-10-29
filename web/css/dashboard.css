@@ -1,0 +1,260 @@
+body{
+    background:#fff5f9;
+    font-family:'Segoe UI', sans-serif;
+    margin:0;
+    padding:0;
+}
+
+/* NAVBAR */
+.navbar {
+    box-sizing: border-box;   /* supaya padding dihitung DI DALAM height, bukan nambah */
+    height: 64px;             /* naikkan dikit biar logo + padding muat nyaman */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 24px;        /* turunkan padding vertikal */
+    background: #ff5fa2;
+    color: white;
+}
+
+.logo {
+    height: 30px;
+    width: auto;
+    object-fit: contain;
+}
+
+.nav-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.user{
+    margin:0;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.user-dropdown {
+    position: relative;
+}
+
+.user-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    color: inherit;
+    padding: 6px 10px;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.user-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.user-caret {
+    font-size: 12px;
+    transition: transform 0.2s ease;
+}
+
+.user-btn[aria-expanded="true"] .user-caret {
+    transform: rotate(180deg);
+}
+
+.user-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: #fff;
+    font-weight: bold;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    min-width: 160px;
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.user-menu.show {
+    display: block;
+}
+
+.user-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    color: #dc3545;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background 0.15s ease;
+}
+
+.user-menu-item:hover {
+    background: #fdf1f2;
+}
+
+.nav-center{
+    display:flex;
+    align-items:center;
+}
+
+.nav-right{
+    display:flex;
+    align-items:center;
+}
+
+.logo{
+    height:50px;
+    width:auto;
+}
+
+.nav-left h2{
+    margin:0;
+    font-size:22px;
+    font-weight:bold;
+}
+
+/* MENU NAVBAR */
+.logout-btn{
+    color:white;
+    text-decoration:none;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.ticket-btn{
+    color:white;
+    text-decoration:none;
+    font-size:17px;
+    font-weight:bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.ticket-btn:hover,
+.logout-btn:hover{
+    opacity:0.8;
+}
+
+/* CONTAINER */
+.container{
+    padding:30px;
+}
+
+.container h1{
+    color:#ff5fa2;
+    margin-bottom:20px;
+}
+
+/* CARD EVENT */
+.card{
+    width:250px;
+    background:white;
+    border-radius:20px;
+    overflow:hidden;
+    display:inline-block;
+    margin:15px;
+    vertical-align:top;
+    box-shadow:0 8px 25px rgba(255,95,162,.15);
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card img{
+    width:100%;
+    height:180px;
+    object-fit:cover;
+}
+
+.card-body{
+    padding:15px;
+}
+
+.card-body h3{
+    color:#ff5fa2;
+    margin-top:0;
+}
+
+.card-body p{
+    margin:8px 0;
+}
+
+.card-body .price{
+    font-size:18px;
+    font-weight:bold;
+    color:#ff5fa2;
+}
+
+/* BUTTON */
+.btn{
+    display:inline-block;
+    margin-top:10px;
+    background:#ff5fa2;
+    color:white;
+    padding:10px 20px;
+    border-radius:30px;
+    text-decoration:none;
+    transition:0.3s;
+}
+
+.btn:hover{
+    background:#ff3d8b;
+}
+
+/* EVENT DETAIL */
+.event-card{
+    width:900px;
+    max-width:95%;
+    background:white;
+    border-radius:25px;
+    overflow:hidden;
+    display:flex;
+    margin:25px auto;
+    box-shadow:0 10px 25px rgba(255,95,162,.15);
+}
+
+.event-img{
+    width:350px;
+    height:250px;
+    object-fit:cover;
+}
+
+.event-info{
+    flex:1;
+    padding:25px;
+}
+
+.category{
+    display:inline-block;
+    background:#ffe0ec;
+    color:#ff5fa2;
+    padding:8px 15px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.event-info h2{
+    color:#ff5fa2;
+    margin-bottom:15px;
+}
+
+.price{
+    font-size:24px;
+    font-weight:bold;
+    color:#ff5fa2;
+    margin-top:15px;
+}

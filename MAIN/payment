@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pembayaran Tiket – QRIS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #f5f5f0;
+      --surface:  #ffffff;
+      --surface2: #f0f0ea;
+      --border:   rgba(0,0,0,0.10);
+      --border2:  rgba(0,0,0,0.18);
+      --text:     #1a1a18;
+      --muted:    #6b6b66;
+      --hint:     #9a9a94;
+      --blue:     #185FA5;
+      --blue-lt:  #E6F1FB;
+      --blue-mid: #B5D4F4;
+      --green:    #1D9E75;
+      --green-lt: #EAF3DE;
+      --green-dk: #27500A;
+      --red:      #D85A30;
+      --radius:   12px;
+      --radius-sm:8px;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem 4rem;
+    }
+
+    /* ── top bar ── */
+    .topbar {
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+    .back-btn {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border2);
+      background: var(--surface);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--text);
+      flex-shrink: 0;
+      text-decoration: none;
+    }
+    .topbar h1 {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    /* ── step indicator ── */
+    .steps {
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+    }
+    .step-group { display: flex; flex-direction: column; align-items: center; }
+    .step-dot {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 500;
+      border: 1px solid var(--border2);
+      background: var(--surface);
+      color: var(--muted);
+      transition: background .3s, color .3s;
+    }
+    .step-dot.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .step-dot.done   { background: var(--green); color: #fff; border-color: var(--green); }
+    .step-label { font-size: 11px; color: var(--hint); margin-top: 4px; white-space: nowrap; }
+    .step-line { flex: 1; height: 1px; background: var(--border); margin-top: 14px; }
+
+    /* ── screens ── */
+    .screen { display: none; width: 100%; max-width: 500px; }
+    .screen.active { display: block; }
+
+    /* ── event banner ── */
+    .event-banner {
+      background: #0C447C;
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .event-banner h2 { font-size: 17px; font-weight: 500; color: #E6F1FB; margin-bottom: 6px; }
+    .event-meta { display: flex; gap: 14px; flex-wrap: wrap; }
+    .event-meta span { font-size: 12px; color: #85B7EB; display: flex; align-items: center; gap: 4px; }
+    .event-meta svg { flex-shrink: 0; }
+
+    /* ── card ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    /* ── ticket rows ── */
+    .section-label {
+      font-size: 11px; font-weight: 500;
+      color: var(--hint);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 12px;
+    }
+    .ticket-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .ticket-row:last-child { border-bottom: none; }
+    .ticket-name { font-size: 14px; font-weight: 500; color: var(--text); }
+    .ticket-price { font-size: 13px; color: var(--muted); margin-top: 2px; }
+    .qty-ctrl { display: flex; align-items: center; gap: 10px; }
+    .qty-btn {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--border2);
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 16px; line-height: 1;
+      color: var(--text);
+      display: flex; align-items: center; justify-content: center;
+      transition: background .15s;
+    }
+    .qty-btn:hover { background: var(--surface2); }
+    .qty-num { font-size: 14px; font-weight: 500; min-width: 16px; text-align: center; color: var(--text); }
+
+    /* ── summary rows ── */
+    .sum-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 0;
+      font-size: 14px;
+      color: var(--text);
+    }
+    .sum-row .lbl { color: var(--muted); font-size: 13px; }
+    .sum-row.total {
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+      margin-top: 4px;
+      font-weight: 500;
+      font-size: 15px;
+    }
+
+    /* ── buttons ── */
+    .btn {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      width: 100%; padding: 12px;
+      border-radius: var(--radius-sm);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px; font-weight: 500;
+      cursor: pointer;
+      transition: opacity .15s;
+    }
+    .btn:hover { opacity: .88; }
+    .btn-primary { background: var(--blue); color: #E6F1FB; border: none; margin-bottom: 8px; }
+    .btn-outline  { background: var(--surface); color: var(--text); border: 1px solid var(--border2); }
+    .btn-green    { background: var(--green); color: #fff; border: none; margin-bottom: 8px; }
+
+    /* ── form ── */
+    .form-group { margin-bottom: 12px; }
+    .form-group label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 5px; }
+    .form-group input {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--border2);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 14px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      outline: none;
+      transition: border-color .15s;
+    }
+    .form-group input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(24,95,165,.12); }
+
+    /* ── QRIS panel ── */
+    .qris-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: var(--blue-lt); color: var(--blue);
+      font-size: 11px; font-weight: 500;
+      padding: 3px 10px; border-radius: 999px;
+      letter-spacing: .05em; text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .qr-center { text-align: center; }
+    .qr-wrap {
+      width: 190px; height: 190px;
+      margin: 0 auto 14px;
+      position: relative;
+    }
+    .qr-wrap svg { width: 100%; height: 100%; }
+    .qr-logo {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 34px; height: 34px;
+      background: var(--surface);
+      border: 2px solid var(--border2);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+    }
+    .amount-lbl { font-size: 13px; color: var(--muted); margin-bottom: 3px; }
+    .amount-big {
+      font-family: 'Space Mono', monospace;
+      font-size: 22px; font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .timer-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: 6px; font-size: 13px; color: var(--muted);
+    }
+    .timer-val { font-family: 'Space Mono', monospace; font-weight: 700; color: var(--red); font-size: 13px; }
+
+    /* ── bank pills ── */
+    .bank-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+    .bank-pill {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 3px 9px;
+      font-size: 11px; font-weight: 500;
+      color: var(--muted);
+    }
+
+    /* ── waiting indicator ── */
+    .waiting-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; font-size: 13px; color: var(--muted);
+      margin: 10px 0 14px;
+    }
+    .pulse-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.25} }
+
+    /* ── success screen ── */
+    .success-screen { text-align: center; padding: 1rem 0 2rem; }
+    .check-circle {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: var(--green-lt);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1rem;
+    }
+    .check-circle svg { color: var(--green-dk); }
+    .success-title { font-size: 20px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+    .success-sub   { font-size: 13px; color: var(--muted); margin-bottom: 1.25rem; }
+
+    /* ── e-ticket card ── */
+    .eticket {
+      background: var(--blue-lt);
+      border: 1px solid var(--blue-mid);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      text-align: left;
+      margin-bottom: 1rem;
+    }
+    .eticket-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+    .eticket-name { font-size: 15px; font-weight: 500; color: #0C447C; }
+    .eticket-date { font-size: 12px; color: #185FA5; margin-top: 2px; }
+    .valid-badge {
+      background: var(--blue);
+      color: var(--blue-lt);
+      font-size: 11px; font-weight: 500;
+      padding: 3px 8px; border-radius: 6px;
+    }
+    .eticket-detail { font-size: 13px; color: #185FA5; margin-bottom: 10px; }
+    .barcode {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--blue);
+      letter-spacing: .1em;
+      background: var(--surface);
+      padding: 6px 12px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+
+    /* ── divider ── */
+    .divider {
+      display: flex; align-items: center; gap: 10px;
+      font-size: 12px; color: var(--hint);
+      margin: 4px 0 10px;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    /* ── inline SVG icons ── */
+    .ico { display: inline-block; vertical-align: middle; }
+  </style>
+</head>
+<body>
+
+<!-- top bar -->
+<div class="topbar">
+  <a href="#" class="back-btn" onclick="handleBack(event)" aria-label="Kembali">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+  </a>
+  <h1 id="topbar-title">Pilih Tiket</h1>
+</div>
+
+<!-- step indicator -->
+<div class="steps" id="steps-bar">
+  <div class="step-group">
+    <div class="step-dot active" id="sd1">1</div>
+    <div class="step-label">Tiket</div>
+  </div>
+  <div class="step-line"></div>
+  <div class="step-group">
+    <div class="step-dot idle" id="sd2">2</div>
+    <div class="step-label">Data diri</div>
+  </div>
+  <div class="step-line"></div>
+  <div class="step-group">
+    <div class="step-dot idle" id="sd3">3</div>
+    <div class="step-label">Bayar</div>
+  </div>
+  <div class="step-line"></div>
+  <div class="step-group">
+    <div class="step-dot idle" id="sd4">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <div class="step-label">Selesai</div>
+  </div>
+</div>
+
+<!-- ════════════ SCREEN 1 – Pilih tiket ════════════ -->
+<div class="screen active" id="screen1">
+
+  <div class="event-banner">
+    <h2>Konser Irama Nusantara 2026</h2>
+    <div class="event-meta">
+      <span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Sabtu, 20 Jun 2026
+      </span>
+      <span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        19.00 WIB
+      </span>
+      <span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        GBK, Jakarta
+      </span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">Pilih kategori tiket</div>
+
+    <div class="ticket-row">
+      <div>
+        <div class="ticket-name">Tribun A – Festival</div>
+        <div class="ticket-price">Rp 150.000 / orang</div>
+      </div>
+      <div class="qty-ctrl">
+        <button class="qty-btn" onclick="changeQty(0,-1)" aria-label="Kurang">−</button>
+        <span class="qty-num" id="q0">0</span>
+        <button class="qty-btn" onclick="changeQty(0,1)" aria-label="Tambah">+</button>
+      </div>
+    </div>
+
+    <div class="ticket-row">
+      <div>
+        <div class="ticket-name">Tribun B – VIP</div>
+        <div class="ticket-price">Rp 350.000 / orang</div>
+      </div>
+      <div class="qty-ctrl">
+        <button class="qty-btn" onclick="changeQty(1,-1)" aria-label="Kurang">−</button>
+        <span class="qty-num" id="q1">0</span>
+        <button class="qty-btn" onclick="changeQty(1,1)" aria-label="Tambah">+</button>
+      </div>
+    </div>
+
+    <div class="ticket-row">
+      <div>
+        <div class="ticket-name">VVIP – Meet &amp; Greet</div>
+        <div class="ticket-price">Rp 750.000 / orang</div>
+      </div>
+      <div class="qty-ctrl">
+        <button class="qty-btn" onclick="changeQty(2,-1)" aria-label="Kurang">−</button>
+        <span class="qty-num" id="q2">0</span>
+        <button class="qty-btn" onclick="changeQty(2,1)" aria-label="Tambah">+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sum-row"><span class="lbl">Subtotal</span><span id="subtotal">Rp 0</span></div>
+    <div class="sum-row"><span class="lbl">Biaya layanan (3%)</span><span id="fee">Rp 0</span></div>
+    <div class="sum-row total"><span>Total</span><span id="total1">Rp 0</span></div>
+  </div>
+
+  <button class="btn btn-primary" onclick="goStep(2)">
+    Lanjut ke data diri
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+</div>
+
+<!-- ════════════ SCREEN 2 – Data diri ════════════ -->
+<div class="screen" id="screen2">
+
+  <div class="card">
+    <div class="section-label">Data pemesan</div>
+    <div class="form-group">
+      <label for="fname">Nama lengkap</label>
+      <input type="text" id="fname" placeholder="Masukkan nama lengkap">
+    </div>
+    <div class="form-group">
+      <label for="femail">Email</label>
+      <input type="email" id="femail" placeholder="email@contoh.com">
+    </div>
+    <div class="form-group">
+      <label for="fphone">No. HP / WhatsApp</label>
+      <input type="tel" id="fphone" placeholder="08xxxxxxxxxx">
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">Ringkasan pesanan</div>
+    <div id="order-detail" style="font-size:14px;color:var(--muted);margin-bottom:10px;line-height:1.8"></div>
+    <div class="sum-row total"><span>Total bayar</span><span id="total2">Rp 0</span></div>
+  </div>
+
+  <button class="btn btn-primary" onclick="goStep(3)">
+    Lanjut ke pembayaran
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+  <button class="btn btn-outline" onclick="goStep(1)">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Kembali
+  </button>
+</div>
+
+<!-- ════════════ SCREEN 3 – QRIS ════════════ -->
+<div class="screen" id="screen3">
+
+  <div class="card">
+    <div class="qr-center">
+      <div class="qris-badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3z"/><path d="M17 17h3v3h-3z"/><path d="M14 17h.01"/><path d="M17 14h.01"/></svg>
+        QRIS · Nasional
+      </div>
+      <div class="qr-wrap">
+        <svg id="qrsvg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="qr-logo">🎟</div>
+      </div>
+      <p class="amount-lbl">Total pembayaran</p>
+      <p class="amount-big" id="qris-amount">Rp 0</p>
+      <div class="timer-row">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Kadaluarsa dalam <span class="timer-val" id="timer">04:59</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">Cara bayar</div>
+    <p style="font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:10px">
+      Buka aplikasi mobile banking atau dompet digital, pilih <strong>Scan QR / QRIS</strong>, lalu arahkan kamera ke kode di atas dan konfirmasi pembayaran.
+    </p>
+    <div class="bank-row">
+      <span class="bank-pill">GoPay</span>
+      <span class="bank-pill">OVO</span>
+      <span class="bank-pill">Dana</span>
+      <span class="bank-pill">BCA</span>
+      <span class="bank-pill">Mandiri</span>
+      <span class="bank-pill">ShopeePay</span>
+      <span class="bank-pill">+ lainnya</span>
+    </div>
+  </div>
+
+  <div class="waiting-row">
+    <span class="pulse-dot"></span>
+    Menunggu pembayaran...
+  </div>
+
+  <button class="btn btn-green" onclick="goStep(4)">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    Simulasi pembayaran berhasil
+  </button>
+  <button class="btn btn-outline" onclick="goStep(2)">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Kembali
+  </button>
+</div>
+
+<!-- ════════════ SCREEN 4 – Selesai ════════════ -->
+<div class="screen" id="screen4">
+  <div class="success-screen">
+    <div class="check-circle">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <p class="success-title">Pembayaran berhasil!</p>
+    <p class="success-sub">Tiketmu sudah dikirim ke email</p>
+
+    <div class="eticket">
+      <div class="eticket-header">
+        <div>
+          <div class="eticket-name">Konser Irama Nusantara 2026</div>
+          <div class="eticket-date">Sabtu, 20 Jun 2026 · 19.00 WIB · GBK Jakarta</div>
+        </div>
+        <span class="valid-badge">VALID</span>
+      </div>
+      <div class="eticket-detail" id="eticket-detail">–</div>
+      <div class="barcode" id="barcode">TKT-2026-XXXXXXXX</div>
+    </div>
+
+    <button class="btn btn-primary" onclick="alert('Mengunduh e-Ticket PDF...')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Unduh e-Ticket PDF
+    </button>
+    <button class="btn btn-outline" onclick="resetAll()">Beli tiket lagi</button>
+  </div>
+</div>
+
+<script>
+  const prices = [150000, 350000, 750000];
+  const names  = ['Festival', 'VIP', 'VVIP – Meet & Greet'];
+  const qty    = [0, 0, 0];
+  const titles = ['Pilih Tiket', 'Data Diri', 'Pembayaran QRIS', 'Tiket Berhasil'];
+  let timerInt = null;
+
+  function fmt(n) {
+    return 'Rp ' + n.toLocaleString('id-ID');
+  }
+
+  function calcTotal() {
+    const sub = qty.reduce((a, q, i) => a + q * prices[i], 0);
+    const fee = sub > 0 ? Math.round(sub * 0.03) : 0;
+    return { sub, fee, total: sub + fee };
+  }
+
+  function updateSummary() {
+    const { sub, fee, total } = calcTotal();
+    document.getElementById('subtotal').textContent = fmt(sub);
+    document.getElementById('fee').textContent      = fmt(fee);
+    document.getElementById('total1').textContent   = fmt(total);
+    document.getElementById('total2').textContent   = fmt(total);
+    document.getElementById('qris-amount').textContent = fmt(total);
+
+    const lines = qty
+      .map((q, i) => q > 0 ? `${names[i]} &times;${q} &nbsp;&nbsp; ${fmt(q * prices[i])}` : '')
+      .filter(Boolean);
+    document.getElementById('order-detail').innerHTML =
+      lines.length ? lines.join('<br>') : '<span style="color:var(--hint)">Belum ada tiket dipilih</span>';
+  }
+
+  function changeQty(i, d) {
+    qty[i] = Math.max(0, Math.min(5, qty[i] + d));
+    document.getElementById('q' + i).textContent = qty[i];
+    updateSummary();
+  }
+
+  /* QR code (simple pixel matrix) */
+  function drawQR() {
+    const pat = [
+      [1,1,1,1,1,1,1,0,1,0,1,0,1,1,1,1,1,1,1,0,0],
+      [1,0,0,0,0,0,1,0,0,1,0,1,1,0,0,0,0,0,1,0,0],
+      [1,0,1,1,1,0,1,0,1,0,1,0,1,0,1,1,1,0,1,0,0],
+      [1,0,1,1,1,0,1,0,0,1,0,1,1,0,1,1,1,0,1,0,1],
+      [1,0,1,1,1,0,1,0,1,0,1,0,1,0,1,1,1,0,1,1,0],
+      [1,0,0,0,0,0,1,0,0,1,0,1,1,0,0,0,0,0,1,0,1],
+      [1,1,1,1,1,1,1,0,1,0,1,0,1,1,1,1,1,1,1,0,0],
+      [0,0,0,0,0,0,0,0,1,1,0,1,0,0,0,0,0,0,0,0,1],
+      [1,0,1,1,0,1,1,1,0,0,1,0,1,1,0,1,1,0,1,1,0],
+      [0,1,0,0,1,0,0,0,1,1,0,1,0,0,1,0,0,1,0,0,1],
+      [1,0,1,0,1,1,1,1,0,0,1,0,1,0,1,1,1,0,1,1,0],
+      [0,1,0,1,0,0,0,0,1,1,0,1,0,1,0,0,0,1,0,0,1],
+      [1,1,1,1,1,0,1,1,0,0,1,0,1,1,1,0,1,1,1,1,0],
+      [0,0,0,0,0,0,0,0,1,1,0,1,0,0,1,1,0,0,0,0,1],
+      [1,1,1,1,1,1,1,0,0,0,1,0,1,1,0,1,0,1,1,0,0],
+      [1,0,0,0,0,0,1,0,1,1,0,1,0,0,1,0,1,0,0,1,0],
+      [1,0,1,1,1,0,1,0,0,0,1,0,1,0,1,1,0,0,1,0,1],
+      [1,0,1,1,1,0,1,0,1,1,0,1,0,1,0,0,1,1,0,1,0],
+      [1,0,1,1,1,0,1,0,0,0,1,1,1,0,1,0,0,0,1,0,1],
+      [1,0,0,0,0,0,1,0,1,1,0,0,0,1,0,1,1,0,0,1,0],
+      [1,1,1,1,1,1,1,0,0,0,1,1,1,0,1,0,0,1,1,0,1]
+    ];
+    const cs = 8, off = 10;
+    const svg = document.getElementById('qrsvg');
+    let html = '';
+    pat.forEach((row, r) => row.forEach((v, c) => {
+      if (v) html += `<rect x="${off + c*cs}" y="${off + r*cs}" width="${cs}" height="${cs}" fill="#111"/>`;
+    }));
+    svg.innerHTML = html;
+  }
+
+  function startTimer() {
+    clearInterval(timerInt);
+    let sec = 299;
+    const el = document.getElementById('timer');
+    timerInt = setInterval(() => {
+      sec--;
+      if (sec <= 0) { clearInterval(timerInt); el.textContent = '00:00'; return; }
+      el.textContent = String(Math.floor(sec/60)).padStart(2,'0') + ':' + String(sec%60).padStart(2,'0');
+    }, 1000);
+  }
+
+  function setDots(step) {
+    for (let i = 1; i <= 4; i++) {
+      const el = document.getElementById('sd' + i);
+      el.className = 'step-dot ' + (i < step ? 'done' : i === step ? 'active' : 'idle');
+      if (i < step) {
+        el.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+      } else {
+        el.textContent = i;
+      }
+    }
+  }
+
+  function goStep(s) {
+    if (s === 2) {
+      if (calcTotal().total === 0) { alert('Pilih setidaknya satu tiket terlebih dahulu.'); return; }
+    }
+    if (s === 3) startTimer();
+    if (s === 4) {
+      clearInterval(timerInt);
+      const ref = 'TKT-2026-' + Math.random().toString(36).substring(2,10).toUpperCase();
+      document.getElementById('barcode').textContent = ref;
+      const det = qty.map((q,i) => q > 0 ? `${names[i]} \u00d7${q}` : '').filter(Boolean).join(' · ');
+      document.getElementById('eticket-detail').textContent = det;
+    }
+    for (let i = 1; i <= 4; i++) {
+      document.getElementById('screen' + i).className = 'screen' + (i === s ? ' active' : '');
+    }
+    document.getElementById('topbar-title').textContent = titles[s - 1];
+    setDots(s);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function handleBack(e) {
+    e.preventDefault();
+    const active = document.querySelector('.screen.active');
+    const id = parseInt(active.id.replace('screen',''));
+    if (id > 1) goStep(id - 1);
+  }
+
+  function resetAll() {
+    qty.fill(0);
+    [0,1,2].forEach(i => document.getElementById('q' + i).textContent = '0');
+    document.getElementById('fname').value = '';
+    document.getElementById('femail').value = '';
+    document.getElementById('fphone').value = '';
+    updateSummary();
+    goStep(1);
+  }
+
+  drawQR();
+  updateSummary();
+</script>
+</body>
+</html>

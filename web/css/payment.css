@@ -1,0 +1,207 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 11 Jun 2026, 02.09.54
+    Author     : Lenovo
+*/
+body{
+    background:#fff5f9;
+    font-family:'Segoe UI',sans-serif;
+    min-height:100vh;
+}
+
+/* HEADER */
+.top-header{
+    background:#ff5fa2;
+    color:white;
+    position:sticky;
+    top:0;
+    z-index:100;
+    box-shadow:0 4px 15px rgba(255,95,162,.15);
+}
+
+.btn-back{
+    background:white;
+    border:none;
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#ff5fa2;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.btn-back:hover{
+    background:#ffe0ec;
+}
+
+/* CARD */
+.card-section{
+    background:white;
+    border-radius:25px;
+    box-shadow:0 8px 25px rgba(255,95,162,.15);
+    padding:25px;
+    margin-bottom:25px;
+}
+
+.card-section h2{
+    color:#ff5fa2;
+}
+
+/* PAYMENT METHOD */
+.method-btn{
+    width:100%;
+    padding:16px;
+    border:2px solid #ffe0ec;
+    border-radius:20px;
+    background:white;
+    text-align:left;
+    cursor:pointer;
+    transition:.3s;
+    margin-bottom:15px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+}
+
+.method-btn:hover{
+    border-color:#ff5fa2;
+}
+
+.method-btn.selected{
+    border-color:#ff5fa2;
+    background:#fff5f9;
+}
+
+.method-icon{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#ffe0ec;
+    color:#ff5fa2;
+    font-size:20px;
+    flex-shrink:0;
+}
+
+.method-btn.selected .method-icon{
+    background:#ff5fa2;
+    color:white;
+}
+
+.method-info{
+    flex:1;
+}
+
+.method-name{
+    font-weight:bold;
+    color:#ff5fa2;
+    margin-bottom:2px;
+}
+
+.method-desc{
+    font-size:14px;
+    color:#666;
+    margin:0;
+}
+
+/* RADIO */
+.radio-circle{
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    border:2px solid #ffc4dd;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.method-btn.selected .radio-circle{
+    border-color:#ff5fa2;
+}
+
+.radio-dot{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    background:#ff5fa2;
+    display:none;
+}
+
+.method-btn.selected .radio-dot{
+    display:block;
+}
+
+/* BUTTON PAY */
+.btn-pay{
+    width:100%;
+    background:#ff5fa2;
+    color:white;
+    border:none;
+    padding:14px;
+    border-radius:30px;
+    font-size:16px;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.btn-pay:hover:not(:disabled){
+    background:#ff3d8b;
+}
+
+.btn-pay:disabled{
+    background:#d9d9d9;
+    cursor:not-allowed;
+}
+
+/* SUCCESS */
+.success-overlay{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(255,245,249,.98);
+    z-index:999;
+    align-items:center;
+    justify-content:center;
+    padding:16px;
+}
+
+.success-overlay.show{
+    display:flex;
+}
+
+.success-card{
+    background:white;
+    border-radius:25px;
+    box-shadow:0 8px 25px rgba(255,95,162,.15);
+    padding:45px 30px;
+    max-width:400px;
+    width:100%;
+    text-align:center;
+}
+
+.success-icon{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    background:#ffe0ec;
+    color:#ff5fa2;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 20px;
+    font-size:40px;
+}
+
+/* TEXT */
+.text-muted{
+    color:#666 !important;
+}
+

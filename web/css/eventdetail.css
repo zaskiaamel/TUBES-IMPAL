@@ -1,0 +1,182 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 11 Jun 2026, 01.54.13
+    Author     : Lenovo
+*/
+body{
+    background:#fff5f9;
+    font-family:'Segoe UI',sans-serif;
+    margin:0;
+    padding:0;
+}
+
+/* HERO SECTION */
+.hero-section{
+    position:relative;
+    height:380px;
+    overflow:hidden;
+}
+
+.hero-section img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.hero-overlay{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        to top,
+        rgba(0,0,0,.6),
+        rgba(0,0,0,.1)
+    );
+}
+
+.hero-top-bar{
+    position:absolute;
+    top:20px;
+    left:20px;
+    right:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.btn-circle{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    background:white;
+    color:#ff5fa2;
+    border:none;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    box-shadow:0 5px 15px rgba(255,95,162,.15);
+    transition:.3s;
+}
+
+.btn-circle:hover{
+    background:#ffe0ec;
+    color:#ff5fa2;
+}
+
+.hero-bottom{
+    position:absolute;
+    left:30px;
+    bottom:30px;
+    color:white;
+}
+
+.badge-category{
+    background:#ff5fa2;
+    color:white;
+    padding:8px 16px;
+    border-radius:20px;
+    display:inline-block;
+    margin-bottom:15px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.hero-bottom h1{
+    font-size:42px;
+    font-weight:bold;
+    margin:0;
+}
+
+/* CONTENT */
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:30px;
+}
+
+/* CARD */
+.card-section{
+    background:white;
+    border-radius:25px;
+    padding:25px;
+    margin-bottom:25px;
+    box-shadow:0 8px 25px rgba(255,95,162,.15);
+}
+
+.card-section h2{
+    color:#ff5fa2;
+    margin-bottom:20px;
+}
+
+/* DETAIL */
+.detail-icon{
+    color:#ff5fa2;
+    font-size:22px;
+}
+
+.text-muted,
+.text-secondary{
+    color:#666 !important;
+}
+
+/* HIGHLIGHTS */
+.highlight-dot{
+    width:8px;
+    height:8px;
+    background:#ff5fa2;
+    border-radius:50%;
+    flex-shrink:0;
+    margin-top:8px;
+}
+
+/* PRICE */
+.price-label{
+    color:#777;
+    font-size:14px;
+}
+
+.price-value{
+    font-size:32px;
+    font-weight:bold;
+    color:#ff5fa2;
+}
+
+/* BUTTON */
+.btn-book{
+    display:inline-block;
+    background:#ff5fa2;
+    color:white;
+    text-decoration:none;
+    padding:12px 25px;
+    border-radius:30px;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.btn-book:hover{
+    background:#ff3d8b;
+    color:white;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+    .hero-section{
+        height:280px;
+    }
+
+    .hero-bottom h1{
+        font-size:28px;
+    }
+
+    .card-section{
+        padding:20px;
+    }
+
+    .price-value{
+        font-size:24px;
+    }
+}

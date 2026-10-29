@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Event Management</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Segoe UI',sans-serif;
+        }
+
+        body{
+            background:#f4f6f9;
+            padding:30px;
+        }
+
+        .container{
+            max-width:1200px;
+            margin:auto;
+        }
+
+        .header{
+            background:#1e293b;
+            color:white;
+            padding:20px;
+            border-radius:10px;
+            margin-bottom:20px;
+        }
+
+        .card{
+            background:white;
+            padding:20px;
+            border-radius:10px;
+            box-shadow:0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom:20px;
+        }
+
+        h2{
+            margin-bottom:15px;
+        }
+
+        .form-group{
+            margin-bottom:15px;
+        }
+
+        label{
+            display:block;
+            margin-bottom:5px;
+            font-weight:600;
+        }
+
+        input{
+            width:100%;
+            padding:10px;
+            border:1px solid #ccc;
+            border-radius:5px;
+        }
+
+        .btn{
+            padding:10px 15px;
+            border:none;
+            border-radius:5px;
+            cursor:pointer;
+            color:white;
+        }
+
+        .btn-add{
+            background:#16a34a;
+        }
+
+        .btn-edit{
+            background:#f59e0b;
+        }
+
+        .btn-delete{
+            background:#dc2626;
+        }
+
+        table{
+            width:100%;
+            border-collapse:collapse;
+        }
+
+        table th{
+            background:#1e293b;
+            color:white;
+            padding:12px;
+        }
+
+        table td{
+            padding:12px;
+            border-bottom:1px solid #ddd;
+        }
+
+        .action{
+            display:flex;
+            gap:10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>Admin Dashboard</h1>
+        <p>Event Management & Ticketing System</p>
+    </div>
+
+    <div class="card">
+        <h2>Tambah Event</h2>
+
+        <div class="form-group">
+            <label>ID Event</label>
+            <input type="text">
+        </div>
+
+        <div class="form-group">
+            <label>Nama Event</label>
+            <input type="text">
+        </div>
+
+        <div class="form-group">
+            <label>Lokasi</label>
+            <input type="text">
+        </div>
+
+        <div class="form-group">
+            <label>Tanggal</label>
+            <input type="date">
+        </div>
+
+        <div class="form-group">
+            <label>Harga Tiket</label>
+            <input type="number">
+        </div>
+
+        <button class="btn btn-add">
+            Tambah Event
+        </button>
+    </div>
+
+    <div class="card">
+        <h2>Daftar Event</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nama Event</th>
+                    <th>Lokasi</th>
+                    <th>Tanggal</th>
+                    <th>Harga</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>EV001</td>
+                    <td>International Music Festival</td>
+                    <td>Bandung</td>
+                    <td>10 Juni 2026</td>
+                    <td>Rp150.000</td>
+
+                    <td class="action">
+                        <button class="btn btn-edit">
+                            Edit
+                        </button>
+
+                        <button class="btn btn-delete">
+                            Hapus
+                        </button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>EV002</td>
+                    <td>Tech Conference</td>
+                    <td>Jakarta</td>
+                    <td>15 Juni 2026</td>
+                    <td>Rp250.000</td>
+
+                    <td class="action">
+                        <button class="btn btn-edit">
+                            Edit
+                        </button>
+
+                        <button class="btn btn-delete">
+                            Hapus
+                        </button>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>
